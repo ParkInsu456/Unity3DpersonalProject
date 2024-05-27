@@ -13141,7 +13141,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1084800608}
   m_Layer: 0
-  m_Name: cameraContainer
+  m_Name: CameraContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26159,8 +26159,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2091594307}
+  - component: {fileID: 2091594313}
   - component: {fileID: 2091594308}
-  - component: {fileID: 2091594309}
   - component: {fileID: 2091594312}
   - component: {fileID: 2091594311}
   - component: {fileID: 2091594310}
@@ -26184,8 +26184,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 395976485}
   - {fileID: 1084800608}
+  - {fileID: 395976485}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &2091594308
@@ -26196,7 +26196,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2091594306}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 20
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -26215,27 +26215,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!65 &2091594309
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2091594306}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.98793954, y: 2.0867682, z: 1}
-  m_Center: {x: 0.0060302317, y: 0.012075186, z: 0}
 --- !u!114 &2091594310
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26250,6 +26229,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 10
   jumpPower: 5
+  cameraContainer: {fileID: 0}
+  minXLook: -80
+  maxXLook: 80
+  lookSensitivity: 1
+  canLook: 1
 --- !u!114 &2091594311
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26320,11 +26304,50 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 69e7c43e-2e0e-4280-bae7-2cac2cab3a67
     m_ActionName: Player/Run[/Keyboard/leftShift]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2091594310}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnLook
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 84fc63e3-49ee-4846-843b-fec922af8d1d
+    m_ActionName: Player/Look[/Mouse/delta]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!136 &2091594313
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2091594306}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &2095830575
 PrefabInstance:
   m_ObjectHideFlags: 0
