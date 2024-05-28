@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-
     public static Player player { get => CharacterMgr.Instance.Player; }
+
     [HideInInspector] public PlayerController controller;
     
 

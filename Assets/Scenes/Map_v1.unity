@@ -11945,7 +11945,7 @@ GameObject:
   - component: {fileID: 916139332}
   - component: {fileID: 916139331}
   m_Layer: 0
-  m_Name: Main Camera
+  m_Name: MainCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26780,6 +26780,8 @@ GameObject:
   - component: {fileID: 2091594311}
   - component: {fileID: 2091594310}
   - component: {fileID: 2091594314}
+  - component: {fileID: 2091594316}
+  - component: {fileID: 2091594315}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -26925,7 +26927,19 @@ MonoBehaviour:
     m_ActionId: 6bed2092-a70c-4e46-9a36-706cbb5d0868
     m_ActionName: Player/Jump[/Keyboard/space]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2091594315}
+        m_TargetAssemblyTypeName: AimPromptInfo, Assembly-CSharp
+        m_MethodName: OnInteractInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: e6190add-ab9d-4e4b-a678-8ab2860096ff
     m_ActionName: Player/Interaction[/Keyboard/e]
   - m_PersistentCalls:
@@ -26993,6 +27007,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   conditionMgr: {fileID: 31853385}
+--- !u!114 &2091594315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2091594306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3f0bf04ad3d1ee48b837106de27b6e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  promptText: {fileID: 0}
+--- !u!114 &2091594316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2091594306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5680f73945cb78441baef3430e5c60f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxRayDistance: 0
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  curAimingObject: {fileID: 0}
 --- !u!1001 &2095830575
 PrefabInstance:
   m_ObjectHideFlags: 0
