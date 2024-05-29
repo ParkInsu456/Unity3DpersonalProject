@@ -27599,7 +27599,7 @@ MonoBehaviour:
     m_ActionName: Player/Jump[/Keyboard/space]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2091594315}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AimPromptInfo, Assembly-CSharp
         m_MethodName: OnInteractInput
         m_Mode: 0
@@ -27687,12 +27687,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2091594306}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3f0bf04ad3d1ee48b837106de27b6e7, type: 3}
+  m_Script: {fileID: 11500000, guid: 2e91793e94a30094497bcfc078e24d50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 64
   promptText: {fileID: 1898722605}
 --- !u!114 &2091594316
 MonoBehaviour:
@@ -27703,14 +27700,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 2091594306}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5680f73945cb78441baef3430e5c60f9, type: 3}
+  m_Script: {fileID: 11500000, guid: cda5e385bfc1fed45b45f2e18c715ab8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxRayDistance: 3
   layerMask:
     serializedVersion: 2
-    m_Bits: 0
-  curAimingObject: {fileID: 0}
+    m_Bits: 64
+  IsHit: 0
+  curInteractGameObject: {fileID: 0}
 --- !u!1001 &2095830575
 PrefabInstance:
   m_ObjectHideFlags: 0
