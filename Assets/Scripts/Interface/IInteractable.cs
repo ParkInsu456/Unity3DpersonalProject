@@ -5,4 +5,5 @@ public interface IInteractable
     // 상호작용에 필요한 기능
     public string GetInteractPrompt();
     public void OnInteract();
+    
 }

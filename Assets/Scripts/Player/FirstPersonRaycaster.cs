@@ -25,19 +25,19 @@ public class FirstPersonRaycaster : MonoBehaviour
 
     // 크로스헤어를 경로로 Ray를 쏘는 클래스
 
+    // 옵저버패턴: Subject클래스
+
     [Header("Aim Ray")]
     private float checkInterval = 0.05f;
     private float lastCheckTime;
     [SerializeField] private float maxRayDistance;
-    [SerializeField] private LayerMask layerMask;   // 인스펙터에서 설정해야함.
+    [SerializeField] private LayerMask layerMask;   // 인스펙터에서 설정해야함. 여기에 지형을 뺀 나머지를 모두 넣자?
 
     public GameObject curAimingObject;
+    public IInteractable curInteractable;          // FPR에서 검출한 게임오브젝트의 IInteractable에 선언된 함수로 접근하기 위한 접근자.
     public RaycastHit curHit;
 
     private Camera mainCamera;
-
-   
-
     
 
     private void Awake()
@@ -61,27 +61,37 @@ public class FirstPersonRaycaster : MonoBehaviour
 
             Ray ray = mainCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
             RaycastHit hit; //Ray를 맞은 대상을 저장할 변수
-
+            
             if (Physics.Raycast(ray, out hit, maxRayDistance))
             {
-                if(hit.collider.gameObject != curAimingObject)  // 처음엔 비어있을것, 에임대상이 이벤트 대상이 아니면 CallEvent에 뭐가 들어있지도 않을것.
+                if (hit.collider.gameObject != curAimingObject)  // 계속 같은 오브젝트를 가리키면 달라질게 없기때문에 아래코드를 실행하지 않아도됨. 처음엔 비어있을것, 에임대상이 이벤트 대상이 아니면 CallEvent에 뭐가 들어있지도 않을것.
                 {
                     curAimingObject = hit.collider.gameObject;
+                    layerMask.value = hit.collider.gameObject.layer;
                     switch (layerMask.value)
                     {
-                        case (int)LayerNum.Interactable :
-                            AimEvent.myEvent.CallEvent();   // 정보를 출력하는 함수를 넣는다.
+                        case (int)LayerNum.Interactable:
+                            curInteractable = hit.collider.GetComponent<IInteractable>();
+
+                            AimEvent.myEvent.CallEvent();   // 정보를 출력하는 함수를 넣는다.    이 객체가 검출됐다고 옵저버에 알려줌
+                            break;
+                        default:
+                            layerMask.value = -1;
+                            curAimingObject = null;
+                            curInteractable = null;
+
                             break;
                     }
-                    // 여기에 옵저버패턴?
-                    
+                    //// 여기에 옵저버패턴?
+
                 }
             }
-            else // 크로스헤어가 빈 공간을 가리켜서 Ray에 검출된 대상이 없는 경우
+            else //    //Ray에 검출된 대상이 없는 경우는 왠만하면 없다. 땅을 향하면 땅이 검출된다.
             {
-                curAimingObject = null;
+                //curAimingObject = null;
+                //curInteractable = null;
                 // 여기에 옵저버패턴?
-                AimEvent.myEvent.ClearEvent();
+                //AimEvent.myEvent.ClearEvent();
             }
 
         }
