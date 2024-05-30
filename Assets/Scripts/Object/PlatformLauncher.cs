@@ -10,10 +10,9 @@ public class PlatformLauncher : MonoBehaviour
     // 플랫폼발사대를 통해 발사되면 플레이어는 이동입력을 해도 움직이지 못하고 정해진 방향을 향해 날라간다. (시야이동은 가능)
 
 
-
-
     private float onPlatformTime;   
     public float readyTime;    // 인스펙터에서 설정.
+    bool IsShoot = false;
 
     public Vector3 fixedDirection; //정해진 방향
     public float shootPower;
@@ -23,24 +22,18 @@ public class PlatformLauncher : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             onPlatformTime = Time.time;
-            Debug.Log("On Platform");
+           Debug.Log("On Platform");
         }
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if (Time.time - onPlatformTime > readyTime)
-        {
+        if (!IsShoot && Time.time - onPlatformTime > readyTime)
+        {            
             Debug.Log("Ready");
+            IsShoot = true;
+            StartCoroutine(FalseIsShoot());
 
-            // 발사로 인해 힘이 가해지기 직전에 플레이어의 벡터를 발사벡터로 바꿔넣어야함
-            
-            // 키인풋 막기
-            //if (other.gameObject.TryGetComponent<PlayerInput>(out PlayerInput playerinput))
-            //{
-            //    playerinput.enabled = false;
-            //}
-           
             // 벡터 바꾸기
             if (other.gameObject.TryGetComponent<PlayerController>(out PlayerController playercontroller))
             {
@@ -49,11 +42,16 @@ public class PlatformLauncher : MonoBehaviour
 
             Rigidbody rb = other.gameObject.GetComponent<Rigidbody>();
             rb.AddForce(fixedDirection * shootPower, ForceMode.Impulse);
+            Debug.Log("Shoot~~");
         }
-
     }
 
-
+    private IEnumerator FalseIsShoot()
+    {
+        yield return new WaitForSeconds(2f);
+        IsShoot = false;
+        yield return null;
+    }
 
 
 

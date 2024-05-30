@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -59,7 +60,10 @@ public class PlayerController : MonoBehaviour
         if (!IsThrowed) 
         { Move(); }
         else 
-        { ThrowPlayerEnd(); }
+        {
+            
+            ThrowPlayerEnd();
+        }
     }
 
     private void LateUpdate()
@@ -157,15 +161,29 @@ public class PlayerController : MonoBehaviour
     public void ThrowPlayer()
     {
         //playerInput.enabled = false;    // 마우스회전까지 막는 문제가 있음. 구체적으로 일부만 막는 방법을 찾기.
+        StartCoroutine(CutGroundRay());
         playerInput.actions.FindAction("Move").Disable();
         IsThrowed = true;
         direction.x = _rb.velocity.x;
         direction.z = _rb.velocity.z;
     }
+
+    // 잠시 GroundRayDistance를 짧게하는 메서드
+    private IEnumerator CutGroundRay()
+    {
+        float defaultGroundRayDistance = meshHalfLength;
+        meshHalfLength = 0f;
+        yield return new WaitForSeconds(2f);
+        meshHalfLength = defaultGroundRayDistance;
+        Debug.Log("코루틴끝");
+        yield return null;
+    }
+
     // 날라간 후 땅에 닿으면 rb를 원래대로 돌리는 메서드
     public void ThrowPlayerEnd()
     {
-        if(isGrounded)
+        
+        if (IsGrounded())
         {
             //playerInput.enabled = true;
             playerInput.actions.FindAction("Move").Enable();
