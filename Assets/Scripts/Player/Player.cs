@@ -15,8 +15,19 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
+        CharacterMgr.Instance.Player = this;
         controller = GetComponent<PlayerController>(); 
         condition = GetComponent<PlayerCondition>();
+    }
+
+
+    public float GetmoveSpeed()
+    {
+        return controller.moveSpeed;
+    }
+    public void SetmoveSpeed(float value)
+    {
+        controller.moveSpeed = value;
     }
 
 }
