@@ -24,7 +24,6 @@ public class EventMgr : MonoBehaviour
 
 
 
-
     private void Awake()    // 1. Awake()가 실행됐다는건 이 스크립트가 유니티 생명주기에서 들어갔다는것=> GameObject에 붙어서 실행됐다는것.
     {
         if (_instance == null)
