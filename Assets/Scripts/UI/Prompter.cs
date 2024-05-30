@@ -28,7 +28,6 @@ public class Prompter : MonoBehaviour
     // 상호작용된 curInteractable에서 GetInteractPrompt를 호출한다.   
     private void ActivePrompter()
     {
-        
         promptText.text = interactor.curInteractable.GetInteractPrompt();
     }
 
