@@ -58,10 +58,11 @@ public class PlayerController : MonoBehaviour
     {
         // OnMove를 통해 얻은 방향을 이용해 계산한 이동메서드가 들어가야함
         if (!IsThrowed) 
-        { Move(); }
+        { 
+            Move();
+        }
         else 
-        {
-            
+        {            
             ThrowPlayerEnd();
         }
     }
@@ -80,9 +81,11 @@ public class PlayerController : MonoBehaviour
         direction = (transform.forward * curMoveInput.y + transform.right * curMoveInput.x).normalized; // 정규화를 더해봄
         direction *= moveSpeed; // 방향에 속도를 곱해서 벡터의 크기를 가진다.
         direction.y = _rb.velocity.y; // 이거 없으면 점프키를 누른 순간에만 velocity가 있고 다음프레임부터는 direction.y가 0이 됨   // 점프를 했을때만 위아래로 움직여야함.=> 평상시에 움직임에 y(높낮이)가 요동치지 않도록 고정해줌.
+       
         _rb.velocity = direction;
 
     }
+
 
     private void CameraLook()
     {

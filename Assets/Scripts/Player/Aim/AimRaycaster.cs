@@ -26,8 +26,6 @@ public class AimRaycaster : MonoBehaviour
 
     public Camera cam;
 
-    private bool IsThird = false;
-
     private void Awake()
     {
         cam = Camera.main;
