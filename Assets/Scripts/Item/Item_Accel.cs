@@ -16,6 +16,7 @@ public class Item_Accel : MonoBehaviour , IFieldItem
     {
         if(other.gameObject.CompareTag("Player"))
         {
+            Debug.Log("Get FieldItem");
             StartCoroutine(ActiveFieldItem());
         }
     }

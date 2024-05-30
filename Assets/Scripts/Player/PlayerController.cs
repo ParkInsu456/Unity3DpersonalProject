@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     [Header("Movement")]
     public float moveSpeed;
     public float jumpPower;
+    public Vector3 direction;
     private Vector2 curMoveInput;   // 키를 입력할 때마다 여기에 새로운 Vector2값이 들어가게 됨. 방향벡터
     public LayerMask groundLayerMask;   // 인스펙터에서 고를수도 있고 코드에서 정할 수도 있겠다.
 
@@ -27,6 +28,12 @@ public class PlayerController : MonoBehaviour
     // Mesh Renderer를 통해 메쉬의 y축 길이를 얻는다. 그 길이의 절반을 오브젝트의 zero원점과 바닥과의 거리로 간주한다.
     private float meshHalfLength;   // 메쉬의 y축 길이
 
+    // Throwed
+    public bool isGrounded { get => IsGrounded(); }
+    public bool IsThrowed;
+
+    private PlayerInput playerInput;
+
 
     // 디버그
     public float mouseDeltaY;
@@ -37,6 +44,7 @@ public class PlayerController : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         cameraContainer = transform.GetChild(0);    // 하이어라키 순서 주의
+        playerInput = GetComponent<PlayerInput>();
     }
 
     private void Start()
@@ -48,7 +56,10 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         // OnMove를 통해 얻은 방향을 이용해 계산한 이동메서드가 들어가야함
-        Move();
+        if (!IsThrowed) 
+        { Move(); }
+        else 
+        { ThrowPlayerEnd(); }
     }
 
     private void LateUpdate()
@@ -62,11 +73,11 @@ public class PlayerController : MonoBehaviour
     private void Move()
     {
         // 방향         앞뒤방향 * y값이 -1 ~ +1을 오갈거기 때문.    좌우방향  x값이 -1 ~ +1을 오갈거기 때문
-        Vector3 direction = (transform.forward * curMoveInput.y + transform.right * curMoveInput.x).normalized; // 정규화를 더해봄
+        direction = (transform.forward * curMoveInput.y + transform.right * curMoveInput.x).normalized; // 정규화를 더해봄
         direction *= moveSpeed; // 방향에 속도를 곱해서 벡터의 크기를 가진다.
         direction.y = _rb.velocity.y; // 이거 없으면 점프키를 누른 순간에만 velocity가 있고 다음프레임부터는 direction.y가 0이 됨   // 점프를 했을때만 위아래로 움직여야함.=> 평상시에 움직임에 y(높낮이)가 요동치지 않도록 고정해줌.
         _rb.velocity = direction;
-               
+
     }
 
     private void CameraLook()
@@ -82,7 +93,7 @@ public class PlayerController : MonoBehaviour
 
 
     //InvokeUnityEvents를 통해 호출되는 함수
-    public void OnMove(InputAction.CallbackContext context) 
+    public void OnMove(InputAction.CallbackContext context)
     {
         if (context.phase == InputActionPhase.Performed)    // 키를 누르는 중에
         {
@@ -103,8 +114,8 @@ public class PlayerController : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if(context.phase == InputActionPhase.Started && IsGrounded())
-        _rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse); // Vector2이건 Vector3이건 y가 변하는건 같다.
+        if (context.phase == InputActionPhase.Started && IsGrounded())
+            _rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse); // Vector2이건 Vector3이건 y가 변하는건 같다.
     }
 
     // 땅에 닿아있다면 true를 반환하는 메서드
@@ -122,11 +133,11 @@ public class PlayerController : MonoBehaviour
         };
 
         // rays를 순회해 하나라도 땅을 검출해낸다면 true를 반환한다.
-        for(int i = 0; i < rays.Length; ++i)
+        for (int i = 0; i < rays.Length; ++i)
         {
-            if (Physics.Raycast(rays[i], meshHalfLength+ 0.1f, groundLayerMask))
+            if (Physics.Raycast(rays[i], meshHalfLength + 0.1f, groundLayerMask))
             {
-                return true; 
+                return true;
             }
         }
         // 위에서 true를 반환하지 못한다면 false가 반환된다.
@@ -139,6 +150,27 @@ public class PlayerController : MonoBehaviour
         Renderer mr = GetComponentInChildren<MeshRenderer>();
         if (mr == null) mr = GetComponentInChildren<SkinnedMeshRenderer>();
         meshHalfLength = mr.bounds.size.y / 2;  // 메쉬의 y길이를 반으로 나눔 => 중앙과 바닥과의 거리
+    }
+
+
+    // direction을 rb에 맞게 바꿔주는 메서드
+    public void ThrowPlayer()
+    {
+        //playerInput.enabled = false;    // 마우스회전까지 막는 문제가 있음. 구체적으로 일부만 막는 방법을 찾기.
+        playerInput.actions.FindAction("Move").Disable();
+        IsThrowed = true;
+        direction.x = _rb.velocity.x;
+        direction.z = _rb.velocity.z;
+    }
+    // 날라간 후 땅에 닿으면 rb를 원래대로 돌리는 메서드
+    public void ThrowPlayerEnd()
+    {
+        if(isGrounded)
+        {
+            //playerInput.enabled = true;
+            playerInput.actions.FindAction("Move").Enable();
+            IsThrowed = false;
+        }
     }
 }
 

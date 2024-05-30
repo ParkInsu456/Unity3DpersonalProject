@@ -29,5 +29,6 @@ public class Player : MonoBehaviour
     {
         controller.moveSpeed = value;
     }
+    
 
 }
