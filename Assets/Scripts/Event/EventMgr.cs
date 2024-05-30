@@ -42,7 +42,4 @@ public class EventMgr : MonoBehaviour
 
         aimEvent = transform.AddComponent<AimEvent>();
     }
-
-
-
 }
